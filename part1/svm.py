@@ -2,9 +2,6 @@ from classifier import Classifier
 from sklearn.svm import SVC
 from args import args
 
-import numpy as np
-import math
-
 class SVM(Classifier):
     def __init__(self):
         self.clf = SVC(C=args.reg)
