@@ -71,5 +71,12 @@ class Dataset:
                 if s[feature] == target:
                     samples.append(s)
                     labels.append(l)
-
+        
         return Dataset(np.array(samples), np.array(labels), self.dmap)
+
+    def fold(self, k):
+        """Returns a view of this dataset's samples and labels, divided into
+           k folds."""
+
+        return (np.array(np.array_split(self.samples, k), dtype=np.object),
+                np.array(np.array_split(self.labels, k), dtype=np.object))

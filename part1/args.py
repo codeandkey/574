@@ -10,10 +10,10 @@ parser.add_argument(
 )
 
 parser.add_argument(
-    '--iterations',
-    type=int,
-    default=1600,
-    help='Training iterations',
+    '--reg',
+    default=1,
+    type=float,
+    help='SVC regularization constant',
 )
 
 parser.add_argument(
@@ -24,7 +24,7 @@ parser.add_argument(
 
 parser.add_argument(
     '--trees',
-    default=10,
+    default=100,
     help='Trees used in random forest',
     type=int
 )
@@ -33,12 +33,6 @@ parser.add_argument(
     '--folds',
     default=10,
     help='Number of folds for K-fold',
-)
-
-parser.add_argument(
-    '--reg',
-    default=0.001,
-    help='Regulariziation weight',
 )
 
 parser.add_argument(
@@ -52,6 +46,14 @@ parser.add_argument(
     default='kfold',
     choices=['kfold', 'loocv'],
     help='Evaluation method',
+    type=str
+)
+
+parser.add_argument(
+    '--criterion',
+    default='gini',
+    choices=['gini', 'log_loss', 'entropy'],
+    help='Decision tree splitting strategy',
     type=str
 )
 

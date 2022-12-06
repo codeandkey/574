@@ -1,10 +1,11 @@
 from classifier import Classifier
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
+from args import args
 
 class DecisionTree(Classifier):
-    def __init__(self, features):
-        self.clf = DecisionTreeClassifier()
+    def __init__(self):
+        self.clf = DecisionTreeClassifier(criterion=args.criterion)
 
     def train(self, samples, __labels):
         labels = __labels * 2 - 1

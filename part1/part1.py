@@ -1,4 +1,4 @@
-from crossval import kfold, loocv
+from crossval import evaluate
 from svm import SVM
 from dtree import DecisionTree
 from dataset import Dataset
@@ -22,21 +22,9 @@ if __name__ == '__main__':
     else:
         raise RuntimeError('invalid classifier type')
 
-    if args.eval == 'kfold':
-        results = kfold(ctype, d)
-    elif args.eval == 'loocv':
-        results = loocv(ctype, d)
+    train_info, test_info = evaluate(ctype, d)
 
-    train_acc, train_prec, train_recall, train_f1, test_acc, test_prec, test_recall, test_f1 = results
-
-    print('train:')
-    print(f'\tacc {train_acc:.3f}')
-    print(f'\tprec {train_prec:.3f}')
-    print(f'\trecall {train_recall:.3f}')
-    print(f'\tf1 {train_f1:.3f}')
-
-    print('test:')
-    print(f'\tacc {test_acc:.3f}')
-    print(f'\tprec {test_prec:.3f}')
-    print(f'\trecall {test_recall:.3f}')
-    print(f'\tf1 {test_f1:.3f}')
+    print(f'\tacc {train_info.accuracy:.3f} {test_info.accuracy:.3f}')
+    print(f'\tprec {train_info.precision:.3f} {test_info.precision:.3f}')
+    print(f'\trecall {train_info.recall:.3f} {test_info.recall:.3f}')
+    print(f'\tf1 {train_info.f1:.3f} {test_info.f1:.3f}')

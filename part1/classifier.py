@@ -1,3 +1,18 @@
+class AccuracyInfo:
+    def __init__(self):
+        self.accuracy_list = []
+        self.precision_list = []
+        self.recall_list = []
+        self.f1_list = []
+
+    def __getattr__(self, attr):
+        target = getattr(self, attr + '_list')
+
+        if len(target) == 0:
+            return 0
+
+        return sum(target) / len(target)
+
 class Classifier:
     def train(self, dataset):
         """Trains this classifier on some training data."""
@@ -7,7 +22,7 @@ class Classifier:
         """Classifies a collection of samples."""
         raise RuntimeError('invalid classifier')
 
-    def accuracy(self, samples, labels):
+    def accuracy(self, samples, labels, info):
         """Tests the accuracy of the classifier on a collection of samples."""
         pred = self.infer(samples)
 
@@ -28,7 +43,23 @@ class Classifier:
                 else:
                     tn += 1
 
-        prec = tp / (tp + fp + .0001)
-        recall = tp / (tp + fn + .0001)
+        accuracy = 0
+        precision = 0
+        recall = 0
+        f1 = 0
 
-        return ((tp + tn) / (tp + tn + fp + fn)), prec, recall, 2 * (prec * recall) / (prec + recall + 0.0001)
+        if tp + fp > 0:
+            precision = tp / (tp + fp)
+            info.precision_list.append(precision)
+
+        if tp + fn > 0:
+            recall = tp / (tp + fn)
+            info.recall_list.append(recall)
+
+        if tp + fp + tn + fn > 0:
+            accuracy = (tp + tn) / (tp + fp + tn + fn)
+            info.accuracy_list.append(accuracy)
+
+        if precision + recall > 0:
+            f1 =  (precision * recall) / (precision + recall)
+            info.f1_list.append(f1)
