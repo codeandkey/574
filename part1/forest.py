@@ -1,10 +1,6 @@
-from dtree import DecisionTree
 from classifier import Classifier
 from args import args
 from sklearn.ensemble import RandomForestClassifier
-
-import math
-import numpy as np
 
 class RandomForest(Classifier):
     def __init__(self):
