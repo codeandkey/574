@@ -32,51 +32,9 @@ def load(path):
     labels = samples[:,-1]
     samples = samples[:,:-1]
 
-    return Dataset(samples, labels, dmap)
+    return Dataset(samples, labels)
 
 class Dataset:
-    def __init__(self, samples, labels, dmap):
+    def __init__(self, samples, labels):
         self.samples = samples
         self.labels = labels
-        self.dmap = dmap
-
-    def features(self):
-        return self.samples.shape[1]
-
-    def discrete(self, feature):
-        return len(self.dmap[feature]) if feature in self.dmap else None
-
-    # Only two filters..
-    def filter(self, feature, threshold, comparator=None):
-        samples = []
-        labels = []
-
-        if comparator:
-            # Filter by continuous comparator
-            if feature in self.dmap:
-                raise RuntimeError('discrete features cannot use a comparator')
-            
-            for s, l in zip(self.samples, self.labels):
-                if comparator(s[feature], threshold):
-                    samples.append(s)
-                    labels.append(l)
-        else:
-            # Filter by discrete matching, treat threshold as index
-            if feature not in self.dmap:
-                raise RuntimeError('continuous features require a comparator')
-
-            target = threshold / len(self.dmap[feature])
-
-            for s, l in zip(self.samples, self.labels):
-                if s[feature] == target:
-                    samples.append(s)
-                    labels.append(l)
-        
-        return Dataset(np.array(samples), np.array(labels), self.dmap)
-
-    def fold(self, k):
-        """Returns a view of this dataset's samples and labels, divided into
-           k folds."""
-
-        return (np.array(np.array_split(self.samples, k), dtype=np.object),
-                np.array(np.array_split(self.labels, k), dtype=np.object))
