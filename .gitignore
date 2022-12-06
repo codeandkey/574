@@ -1,0 +1,4 @@
+*.aux
+*.log
+part1/__pycache__
+part2/__pycache__
