@@ -8,9 +8,11 @@ import math
 def evaluate(classifier, dataset):
     """Evaluates the accuracy of a classifier using K-fold cross validation."""
 
+    # Prepare train/test stats
     train_info = AccuracyInfo()
     test_info = AccuracyInfo()
 
+    # Select evaluator
     if args.eval == 'kfold':
         folder = KFold()
     elif args.eval == 'loocv':
@@ -18,6 +20,7 @@ def evaluate(classifier, dataset):
     else:
         raise RuntimeError('invalid evaluator')
 
+    # Walk through folds and compute stats
     for train_index, test_index in folder.split(dataset.samples):
         c = classifier()
         c.train(dataset.samples[train_index], dataset.labels[train_index])
