@@ -6,6 +6,8 @@ class AccuracyInfo:
         self.f1_list = []
 
     def __getattr__(self, attr):
+        """Computes an attribute average, or returns 0 if no records are
+           present."""
         target = getattr(self, attr + '_list')
 
         if len(target) == 0:
@@ -23,8 +25,12 @@ class Classifier:
         raise RuntimeError('invalid classifier')
 
     def accuracy(self, samples, labels, info):
-        """Tests the accuracy of the classifier on a collection of samples."""
+        """Tests the accuracy of the classifier on a collection of samples. The
+           resulting scores are stored in info: AccuracyInfo."""
         pred = self.infer(samples)
+
+        # Count true positive, true negative, etc., and compute accuracy,
+        # precision, recall and F1.
 
         tp = 0
         tn = 0
