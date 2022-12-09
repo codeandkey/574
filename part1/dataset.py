@@ -6,15 +6,21 @@ def load(path):
     dmap = {}
 
     def parse(word, feature):
+        """Parse continuous or discrete attributes."""
+
+        # Check if continuous
         if word.replace('.', '').isnumeric():
             return float(word)
 
+        # If not continuous, check if a discrete map exists for this feature
         if feature not in dmap:
             dmap[feature] = {}
 
+        # Assign a new discrete value to this word
         if word not in dmap[feature]:
             dmap[feature][word] = len(dmap[feature])
 
+        # Return discrete value for this word
         return dmap[feature][word]
 
     with open(path, 'r') as f:
@@ -29,6 +35,7 @@ def load(path):
     samples = np.array(samples)
     np.random.shuffle(samples)
 
+    # Separate last column into labels
     labels = samples[:,-1]
     samples = samples[:,:-1]
 
