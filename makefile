@@ -1,5 +1,7 @@
+.PHONY: clean
+
 report.pdf: report.tex
-	@echo -n Compiling $@ ...
-	@pdflatex report.tex 2>&1 >/dev/null
-	@echo done
-	@rm *.log *.aux
+	pdflatex report.tex 2>&1
+
+clean:
+	rm -rf report.aux report.pdf part1/__pycache__ part2/__pycache__
